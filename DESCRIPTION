@@ -1,0 +1,17 @@
+Package: myClValid
+Type: Package
+Title: my clValid
+Version: 0.1.0
+Author: Incardona Biagio
+Maintainer: Incardona Biagio <biagio.incardona@outlook.it>
+Description: clValid packages for also categorical data
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Collate: myClValid-Classes.R myClValid-Methods.R myClValid-internal.R
+        myClValid-functions.R
+Depends: R (>= 3.0), cluster
+Imports: methods
+Suggests: Biobase, annotate, GO.db, moe430a.db, RankAggreg, kohonen,
+        mclust
+NeedsCompilation: no

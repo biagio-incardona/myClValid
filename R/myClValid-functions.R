@@ -436,32 +436,15 @@ mysilhouette <- function(distance=NULL, clusters, Data=NULL, method="euclidean")
 #####################################################################
 
 connectivity <- function(distance=NULL, clusters, Data=NULL, neighbSize=10, method="euclidean"){
-  
-  print("distance")
-  print(distance)
-  print("-----------------")
-  print("clusters")
-  print(clusters)
-  print("------------------")
-  
-  
   if (is.null(distance) & is.null(Data)) stop("One of 'distance' or 'Data' is required")
   if (is.null(distance)) distance <- as.matrix(dist(Data, method=method))
   if (class(distance)=="dist") distance <- as.matrix(distance)
   
   nearest <- apply(distance,2,function(x) sort(x,ind=TRUE)$ix[2:(neighbSize+1)])
-  
-  print("nearest")
-  print(nearest)
-  print("--------------")
                    
   nr <- nrow(nearest);nc <- ncol(nearest)
-  print("nr")
-  print(nr); print("----------------------------")
   same <- matrix(clusters,nrow=nr,ncol=nc,byrow=TRUE)!=matrix(clusters[nearest],nrow=nr,ncol=nc)
-  print("same");print(same);print("---------------------")
   conn <- sum(same*matrix(1/1:neighbSize,nrow=nr,ncol=nc))
-  print("conn");print(conn);print("_______________________")
   return(conn)
 }
 

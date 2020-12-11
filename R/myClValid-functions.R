@@ -326,6 +326,72 @@ stability <- function(mat, Dist=NULL, del, cluster, clusterDel, method="euclidea
   return(stabmeas)
 }
 
+######################################
+                 #######################
+                 ####################
+                 ###
+my.stability <- function(mat, Dist=NULL, del, cluster, clusterDel, method="euclidean") {
+
+  any.na <- any(is.na(mat))
+  obsNum <- 1:nrow(mat)
+  nc1 <- length(table(cluster))
+  nc2 <- length(table(clusterDel))
+  stabmeas <- numeric(4)
+  names(stabmeas) <- c("APN","AD","ADM","FOM")
+
+  ## measure APN
+  ## calculate a ncxnc matrix of proportion of non-overlaps in the two collection of nc clusters
+  overlap <- xtabs(~cluster + clusterDel)
+  ## measure AD
+  ## calculate a ncxnc matrix of average-distance in the two collection of nc clusters
+  dij <- matrix(rep(NA,nc1*nc2),nc1,nc2)
+
+  if (is.null(Dist)) matDist <- as.matrix(StatMatch::gower.dist(mat))
+  if (class(Dist)=="dist") matDist <- as.matrix(Dist)
+  if (class(Dist)=="matrix") matDist <- Dist
+
+  ## measure ADM
+  ## calculate a ncxnc matrix of distance-average in the two collection of nc clusters
+  dij2 <- matrix(rep(NA,nc1*nc2),nc1,nc2)
+  ii <- 1
+  for (i in sort(unique(cluster))) {
+    jj <- 1
+    xbari <- apply(mat[cluster==i,,drop=FALSE],2, function(x) mean(x, na.rm=TRUE))
+    for (j in sort(unique(clusterDel))) {
+      ## measure AD
+      clusi <- obsNum[cluster==i]
+      clusdelj <- obsNum[clusterDel==j]
+      cl <- length(clusi)*length(clusdelj)
+      if (cl>0) dij[ii,jj] <- mean(matDist[clusi,clusdelj], na.rm=TRUE)
+      ##      if (cl>0) dij[ii,jj] <- mean(as.matrix(Dist)[clusi,clusdelj])
+      ## measure ADM
+      xbarj <- apply(mat[clusterDel==j,,drop=FALSE],2, function(x) mean(x, na.rm=TRUE))
+      diff <- xbari-xbarj
+      if(length(diff)>0) {
+        if(any.na) {
+          diff <- diff[!is.na(diff)]
+          dij2[ii,jj] <- sqrt(mean(diff^2))
+        } else {
+          dij2[ii,jj] <- sqrt(sum(diff^2))
+        }
+      } else {
+        dij2[ii,jj] <- 0
+      }
+      jj <- jj+1
+    }
+    ii <- ii+1
+  }
+  rs <- matrix(rowSums(overlap),nrow=nrow(overlap),ncol=ncol(overlap),byrow=FALSE)
+  cs <- matrix(colSums(overlap),nrow=nrow(overlap),ncol=ncol(overlap),byrow=TRUE)
+  stabmeas["APN"] <- 1-sum(overlap^2/rs)/sum(overlap)
+  stabmeas["AD"] <- sum(overlap*dij)/nrow(mat)
+  stabmeas["ADM"] <- sum(overlap*dij2)/nrow(mat)
+  xbar <- tapply(mat[,del],clusterDel, function(x) mean(x, na.rm=TRUE))
+  stabmeas["FOM"] <- sqrt(mean((mat[,del]-xbar[as.character(clusterDel)])^2, na.rm=TRUE))/sqrt((nrow(mat)-nc1)/nrow(mat))
+  return(stabmeas)
+}
+
+
 
 
 ####################################################################

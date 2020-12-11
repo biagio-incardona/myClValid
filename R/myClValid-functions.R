@@ -331,7 +331,10 @@ stability <- function(mat, Dist=NULL, del, cluster, clusterDel, method="euclidea
                  ####################
                  ###
 my.stability <- function(mat, Dist=NULL, del, cluster, clusterDel, method="euclidean") {
-
+  mat <- one_hot(mat)
+  cluster <- one_hot(cluster)
+  clusterDel <- one_hot(clusterDel)
+  method <- "manhattan"
   any.na <- any(is.na(mat))
   obsNum <- 1:nrow(mat)
   nc1 <- length(table(cluster))
@@ -346,7 +349,7 @@ my.stability <- function(mat, Dist=NULL, del, cluster, clusterDel, method="eucli
   ## calculate a ncxnc matrix of average-distance in the two collection of nc clusters
   dij <- matrix(rep(NA,nc1*nc2),nc1,nc2)
 
-  if (is.null(Dist)) matDist <- as.matrix(StatMatch::gower.dist(mat))
+  if (is.null(Dist)) matDist <- as.matrix(dist(mat, method = method))
   if (class(Dist)=="dist") matDist <- as.matrix(Dist)
   if (class(Dist)=="matrix") matDist <- Dist
 

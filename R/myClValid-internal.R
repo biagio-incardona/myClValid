@@ -116,7 +116,7 @@ my.vClusters <- function(mat,clMethod,nClust,nclustMax, validation,
                {clusterDel <- cutree(clusterObjDel,nc)})
 
         if("stability"%in%validation) {
-          stabmeas <- stability(mat, Dist, del, cluster, clusterDel)
+          stabmeas <- my.stability(mat, Dist, del, cluster, clusterDel)
           measures["APN",ind] <- measures["APN",ind] + stabmeas["APN"]
           measures["AD",ind]  <- measures["AD",ind]  + stabmeas["AD"]
           measures["ADM",ind] <- measures["ADM",ind] + stabmeas["ADM"]

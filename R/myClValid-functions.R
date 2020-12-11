@@ -331,9 +331,9 @@ stability <- function(mat, Dist=NULL, del, cluster, clusterDel, method="euclidea
                  ####################
                  ###
 my.stability <- function(mat, Dist=NULL, del, cluster, clusterDel, method="euclidean") {
-  mat <- one_hot(as.data.table(mat))
-  cluster <- one_hot(as.data.table(cluster))
-  clusterDel <- one_hot(as.data.table(clusterDel))
+  mat <- as.matrix(one_hot(as.data.table(mat)))
+  cluster <- as.matrix(one_hot(as.data.table(cluster)))
+  clusterDel <- as.matrix(one_hot(as.data.table(clusterDel)))
   method <- "manhattan"
   any.na <- any(is.na(mat))
   obsNum <- 1:nrow(mat)

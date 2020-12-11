@@ -10,7 +10,7 @@ Encoding: UTF-8
 LazyData: true
 Collate: myClValid-Classes.R myClValid-Methods.R myClValid-internal.R
         myClValid-functions.R
-Depends: R (>= 3.0), cluster
+Depends: R (>= 3.0), cluster, mltools
 Imports: methods
 Suggests: Biobase, annotate, GO.db, moe430a.db, RankAggreg, kohonen,
         mclust

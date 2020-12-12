@@ -24,7 +24,7 @@ myClValid.cat <- function(obj, nClust, clMethods="hierarchical", validation="sta
 
   validation <- match.arg(validation,c("stability","internal","biological"),several.ok=TRUE)
   metric <- match.arg(metric,c("euclidean", "correlation", "manhattan")) ## used for hierarchical, diana, fanny, agnes, pam
-  method <- match.arg(method,c("ward", "single", "complete", "average")) ## for hclust, agnes
+  method <- match.arg(method,c("ward.D", "single", "complete", "average", "ward.D2")) ## for hclust, agnes
   GOcategory <- match.arg(GOcategory, c("all","BP","CC","MF"))
 
   switch(class(obj)[1],
@@ -152,7 +152,7 @@ clValid <- function(obj, nClust, clMethods="hierarchical", validation="stability
 
   validation <- match.arg(validation,c("stability","internal","biological"),several.ok=TRUE)
   metric <- match.arg(metric,c("euclidean", "correlation", "manhattan")) ## used for hierarchical, diana, fanny, agnes, pam
-  method <- match.arg(method,c("ward", "single", "complete", "average")) ## for hclust, agnes
+  method <- match.arg(method,c("ward.D", "single", "complete", "average", "ward.D2")) ## for hclust, agnes
   GOcategory <- match.arg(GOcategory, c("all","BP","CC","MF"))
 
   switch(class(obj)[1],
